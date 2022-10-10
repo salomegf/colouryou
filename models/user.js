@@ -34,7 +34,7 @@ const userSchema = new Schema({
     age: {
       type: Number,
       // required: true,
-      min: [18, "You must be 18 years old"],
+      min: [13, "You must be 13 years old"],
       max: 100
     },
   });

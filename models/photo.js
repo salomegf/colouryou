@@ -1,8 +1,6 @@
 import mongoose from 'mongoose';
 
-//problème d'import
-//import userSchema from './user.js';
-//import colorSchema from './couleur.js';
+
 
 const Schema = mongoose.Schema
 
