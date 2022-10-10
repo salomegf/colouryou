@@ -3,6 +3,8 @@ import createError from "http-errors";
 import logger from "morgan";
 import indexRouter from "./routes/index.js";
 import usersRouter from "./routes/users.js";
+import photosRouter from "./routes/photos.js";
+import couleursRouter from "./routes/couleurs.js";
 
 const app = express();
 
@@ -12,6 +14,8 @@ app.use(express.urlencoded({ extended: false }));
 
 app.use("/", indexRouter);
 app.use("/users", usersRouter);
+app.use("/photos", photosRouter);
+app.use("/couleurs", couleursRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
