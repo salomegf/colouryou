@@ -6,6 +6,9 @@ import usersRouter from "./routes/users.js";
 import photosRouter from "./routes/photos.js";
 import couleursRouter from "./routes/couleurs.js";
 
+// import mongoose from "mongoose";
+// mongoose.connect(process.env.DATABASE_URL || 'mongodb://localhost/your-app-name');
+
 const app = express();
 
 app.use(logger("dev"));
