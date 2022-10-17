@@ -6,6 +6,10 @@ import usersRouter from "./routes/users.js";
 import photosRouter from "./routes/photos.js";
 import couleursRouter from "./routes/couleurs.js";
 
+import fs from 'fs';
+import yaml from 'js-yaml';
+import swaggerUi from 'swagger-ui-express';
+
 // import mongoose from "mongoose";
 // mongoose.connect(process.env.DATABASE_URL || 'mongodb://localhost/your-app-name');
 
@@ -19,6 +23,11 @@ app.use("/", indexRouter);
 app.use("/users", usersRouter);
 app.use("/photos", photosRouter);
 app.use("/couleurs", couleursRouter);
+
+// Parse the OpenAPI document.
+const openApiDocument = yaml.load(fs.readFileSync('./openapi.yaml'));
+// Serve the Swagger UI documentation.
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(openApiDocument));
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
