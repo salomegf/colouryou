@@ -10,8 +10,12 @@ import fs from 'fs';
 import yaml from 'js-yaml';
 import swaggerUi from 'swagger-ui-express';
 
-// import mongoose from "mongoose";
-// mongoose.connect(process.env.DATABASE_URL || 'mongodb://localhost/your-app-name');
+import mongoose from "mongoose";
+
+mongoose.Promise = Promise;
+mongoose.connect('mongodb://127.0.0.1/coloryou');
+
+// mongoose.connect(process.env.DATABASE_URL || 'mongodb://127.0.0.1/coloryou');
 
 const app = express();
 
