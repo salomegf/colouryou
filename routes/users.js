@@ -6,12 +6,24 @@ const router = express.Router();
 
 // affiche tous les utilisateurs, triés par noms de famille
 router.get("/", (req, res) => {
-  User.find().sort('surname').exec(function (err, users) {
-    if (err) {
-      return next(err);
-    }
+  let query = User.find()
+
+  // filtre par utilisateur
+  if (req.query.username) {
+    query = query.where('username').equals(req.query.username)
+  }
+  // filtre par prénom
+  if (req.query.name) {
+    query = query.where('name').equals(req.query.name)
+  }
+  // filtre par nom de famille
+  if (req.query.surname) {
+    query = query.where('surname').equals(req.query.surname)
+  }
+
+  query.sort('surname').exec(function (err, users) {
     res.send(users);
-  });
+  })
 });
 
 // affiche un utilisateur, selon son id
