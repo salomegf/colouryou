@@ -12,7 +12,7 @@ const userSchema = new Schema({
   surname: {
     type: String,
     required: true,
-    minlength: [3, "Surname is too short"],
+    minlength: [2, "Surname is too short"],
     maxlength: 20
   },
   email: {
@@ -23,8 +23,8 @@ const userSchema = new Schema({
   password: {
     type: String,
     required: true,
-    minlength: [8, "Password is too short"],
-    maxlength: 20
+    minlength: [8, "Password is too short"]
+    
   },
   username: {
     type: String,
@@ -38,6 +38,15 @@ const userSchema = new Schema({
     max: 100
   },
 });
+
+userSchema.set("toJSON", {
+  transform: transformJsonUser
+});
+function transformJsonUser(doc, json, options) {
+ // Remove the hashed password from the generated JSON.
+ delete json.password;
+ return json;
+}
 
 
 
