@@ -13,7 +13,8 @@ import swaggerUi from 'swagger-ui-express';
 import mongoose from "mongoose";
 
 mongoose.Promise = Promise;
-mongoose.connect('mongodb://127.0.0.1/coloryou');
+mongoose.connect(process.env.DATABASE_URL || 'mongodb://127.0.0.1/coloryou');
+//mongoose.connect('mongodb://127.0.0.1/coloryou');
 
 // mongoose.connect(process.env.DATABASE_URL || 'mongodb://127.0.0.1/coloryou');
 
