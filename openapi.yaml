@@ -1,26 +1,323 @@
-# https://swagger.io/specification/
-
-openapi: 3.0.0
+openapi: "3.0.3"
 info:
-  title: Sample API
-  description: Optional multiline or single-line description in [CommonMark](http://commonmark.org/help/) or HTML.
-  version: 0.1.9
-servers:
-  - url: http://api.example.com/v1
-    description: Optional server description, e.g. Main (production) server
-  - url: http://staging-api.example.com
-    description: Optional server description, e.g. Internal staging server for testing
+  title: couleurYou API
+  description: "This API is awesome."
+  version: 2.0.0
+# servers:
+#   - url: http://api.example.com/v1
+#     description: Optional server description, e.g. Main (production) server
+#   - url: http://staging-api.example.com
+#     description: Optional server description, e.g. Internal staging server for testing
+tags:
+  - name: user
+    description: Everything about the users
+  - name: photo
+    description: Access to the photos
+  - name: couleur
+    description: See the couleurs
 paths:
   /users:
     get:
-      summary: Returns a list of users.
+      tags: 
+        - user
+      summary: Retourne une liste d'utilisateurs
       description: Optional extended description in CommonMark or HTML
       responses:
         '200':
           description: A JSON array of user names
           content:
             application/json:
-              schema: 
+              schema:
+                # $ref: '#/components/schemas/User'
                 type: array
                 items: 
                   type: string
+    post:
+      tags: 
+        - user
+      summary: Créer un utilisateur
+      description: ''
+      responses:
+        '200':
+          description: Utilisateur crée
+          content:
+            application/json:
+              schema: 
+                # $ref: '#./models/user'
+                # type: array
+                # items: 
+                #   type: string
+                type: object
+                properties:
+                  name:
+                    type: string
+                    description: Prénom de l'utilisateur
+                    example: John
+                  surname:
+                    type: string
+                    description: Nom de l'utilisateur
+                    example: Doe
+                  email:
+                    type: string
+                    description: Mail de l'utilisateur
+                    example: johndoe@hotmail.com
+                  password:
+                    type: string
+                    description: Mot de passe de l'utilisateur
+                    example: test1234
+                  username:
+                    type: string
+                    description: Pseudo de l'utilisateur
+                    example: john.doe
+                  age:
+                    type: number
+                    description: L'âge de l'utilisateur
+                    example: 24
+        '400':
+          description: Champs incorrect(s)
+        '404':
+          description: ''
+  /users/{id}:
+    get:
+      tags: 
+        - user
+      summary: Trouver les informations d'un utilisateur par son id
+      parameters:
+        - name: id
+          in: path
+          description: L'identifiant unique de l'utilisateur
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: Prénom de l'utilisateur
+                  example: John
+                surname:
+                  type: string
+                  description: Nom de l'utilisateur
+                  example: Doe               
+  /users/login:
+    get:
+      tags: 
+        - user
+      summary: Connecte l'utilisateur à l'API
+      description: ''
+      operationId: loginUser
+      parameters:
+        - name: username
+          in: query
+          description: Le nom d'utilisateur
+          required: true
+          schema:
+            type: string
+        - name: password
+          in: query
+          description: Mot de passe
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                  description: Pseudo de l'utilisateur
+                  example: john.doe
+                password:
+                  type: string
+                  description: Mot de passe de l'utilisateur
+                  example: john1234
+      responses:
+        '200':
+          description: Utilisateur connecté 
+        '400':
+          description: Le nom d'utilisateur et/ou le mot de passe incorrect
+        '404':
+          description: Ressource non trouvée
+  /users/logout:
+    get:
+      tags: 
+        - user
+      summary: Déconnecte l'utilisateur
+      description: ''
+      responses:
+        '200':
+          description: L'utilisateur est déconnecté avec succès
+        '404': 
+          description: Page non trouvée
+
+  # /users/{username}:
+  #   get:
+  #     tags: 
+  #       - user
+  #     summary: Affiche l'utilisateur par l'id
+  #     description: Optional extended description in CommonMark or HTML
+  #     responses:
+  #       '200':
+  #         description: Logout the user from the session
+  #         content:
+  #           application/json:
+  #             schema: 
+  #               $ref: '#/models/user'
+  #               type: array
+  #               items: 
+  #                 type: string
+
+  # /users/{name}:
+  #   get:
+  #     tags: 
+  #       - user
+  #     summary: Logout the user
+  #     description: Optional extended description in CommonMark or HTML
+  #     responses:
+  #       '200':
+  #         description: Logout the user from the session
+  #         content:
+  #           application/json:
+  #             schema: 
+  #               $ref: '#/models/user'
+  #               type: array
+  #               items: 
+  #                 type: string
+
+  # /users/{surname}:
+  #   get:
+  #     tags: 
+  #       - user
+  #     summary: Logout the user
+  #     description: Optional extended description in CommonMark or HTML
+  #     responses:
+  #       '200':
+  #         description: Logout the user from the session
+  #         content:
+  #           application/json:
+  #             schema: 
+  #               $ref: '#/models/user'
+  #               type: array
+  #               items: 
+  #                 type: string
+  /photos:
+    get:
+      tags:
+        - photo
+      summary: Retourne une liste des photos
+      description: ''
+    post:
+      tags:
+        - photo
+      summary: Ajouter une photo
+      description: ''
+      operationId: uploadFile
+      parameters:
+        - name: photoId
+          in: path
+          description: ID de la photo
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: description
+          in: query
+          description: Description de la photo
+          required: false
+          schema:
+            type: string
+        - name: description
+          in: query
+          description: Description de la photo
+          required: false
+          schema:
+            type: string
+        - name: Date
+          in: query
+          description: Date mise en ligne de la photo
+          required: false
+          schema:
+            type: string
+        - name: Location
+          in: query
+          description: Données géo de la photo
+          required: false
+          schema:
+            type: string
+        - name: url
+          in: query
+          description: Le lien de la photo
+          required: false
+          schema:
+            type: string
+        - name: Utilisateur
+          in: query
+          description: L'utilisateur qui a posté de la photo
+          required: true
+          schema:
+            type: string
+        - name: Couleur
+          in: query
+          description: Le thème couleur de la photo
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/octet-stream:
+            schema:
+              type: string
+              format: binary
+      responses:
+        '200':
+          description: Photo ajoutée avec succès
+  
+  /photos/{id}:
+    get:
+      tags:
+        - photo
+      summary: Affiche la photo selectionnée
+      description: ''
+    put:
+      tags:
+        - photo
+      summary: Met à jour une photo existante
+      description: ''
+    delete:
+      tags:
+        - photo
+      summary: Supprime la photo selectionnée
+      description: ''
+  /couleurs:
+    get:
+      tags:
+        - couleur
+      summary: Affiche toutes les couleurs
+      description: ''
+    put:
+      tags:
+        - couleur
+      summary: Met à jour une couleur existante
+      description: ''
+  /couleurs/{id}:
+    get:
+      tags:
+        - couleur
+      summary: Affiche la couleur selectionnée
+      description: ''
+    post:
+      tags:
+        - couleur
+      summary: Modifier la couleur selectionnée
+      description: ''
+    delete:
+      tags:
+        - couleur
+      summary: Supprimer la couleur selectionnée
+      description: ''
+    
+    
+    
