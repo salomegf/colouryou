@@ -17,8 +17,8 @@ router.post('/login', async (req, res, next) => {
         }
 
         const password = req.body.password;
-        const passwordHash = user.passwordHash;
-        const valid = await bcrypt.compare(password, passwordHash);
+        const passwordUser = user.password;
+        const valid = await bcrypt.compare(password, passwordUser);
         if (valid) {
             const subject = user._id;
             const expiresIn = '7 days';
