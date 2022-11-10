@@ -1,6 +1,7 @@
 import express from "express";
 import createError from "http-errors";
 import logger from "morgan";
+import {} from "dotenv/config.js";
 import indexRouter from "./routes/index.js";
 import usersRouter from "./routes/users.js";
 import photosRouter from "./routes/photos.js";
@@ -13,10 +14,7 @@ import swaggerUi from 'swagger-ui-express';
 import mongoose from "mongoose";
 
 mongoose.Promise = Promise;
-mongoose.connect(process.env.DATABASE_URL || 'mongodb://127.0.0.1/coloryou');
-//mongoose.connect('mongodb://127.0.0.1/coloryou');
-
-// mongoose.connect(process.env.DATABASE_URL || 'mongodb://127.0.0.1/coloryou');
+mongoose.connect(process.env.DATABASE_URL  || 'mongodb://127.0.0.1/coloryou');
 
 const app = express();
 
