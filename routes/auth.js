@@ -29,7 +29,8 @@ router.post("/", function (req, res, next) {
                 if (err) {
                     return next(err)
                 }
-                res.send({ token: token })
+                //res.send({ token: token })
+                res.send("Bienvenue " + req.body.username)
             })
         });
     })
