@@ -1,7 +1,7 @@
 openapi: "3.0.3"
 info:
   title: couleurYou API
-  description: "This API is awesome."
+  description: "L'API du moment"
   version: 2.0.0
 # servers:
 #   - url: http://api.example.com/v1
@@ -36,7 +36,31 @@ paths:
       tags: 
         - user
       summary: Créer un utilisateur
-      description: ''
+      description: Insérer les champs nécessaires pour la création d'un utilisateur
+      parameters:
+        - name: name
+          in: path
+          required: true
+          description: Prénom de l'utilisateur
+        - name: surname
+          in: path
+          required: true
+          description: Nom de l'utilisateur
+        - name: email
+          in: path
+          required: true
+          description: Adresse mail de l'utilisateur
+        - name: password
+          in: path
+          required: true
+          description: Mot de passe
+        - name: username
+          in: path
+          required: true
+          description: Pseudo de l'utilisateur
+        - name: age
+          in: path
+          description: Age de l'utilisateur
       responses:
         '200':
           description: Utilisateur crée
@@ -76,7 +100,7 @@ paths:
         '400':
           description: Champs incorrect(s)
         '404':
-          description: ''
+          description: 'Page non trouvée'
   /users/{id}:
     get:
       tags: 
@@ -92,6 +116,10 @@ paths:
             schema:
               type: object
               properties:
+                _id: 
+                  type: string
+                  description: ID unique de l'utilisateur
+                  example: "636cb9790788f89587f12895"
                 name:
                   type: string
                   description: Prénom de l'utilisateur
@@ -99,23 +127,25 @@ paths:
                 surname:
                   type: string
                   description: Nom de l'utilisateur
-                  example: Doe               
+                  example: Doe
+      responses:
+        '200':
+          description: Utilisateur crée            
   /users/login:
     get:
       tags: 
         - user
       summary: Connecte l'utilisateur à l'API
-      description: ''
-      operationId: loginUser
+      description: Se connecter à l'API
       parameters:
         - name: username
-          in: query
+          in: path
           description: Le nom d'utilisateur
           required: true
           schema:
             type: string
         - name: password
-          in: query
+          in: path
           description: Mot de passe
           required: true
           schema:
@@ -146,7 +176,7 @@ paths:
       tags: 
         - user
       summary: Déconnecte l'utilisateur
-      description: ''
+      description: Déconnexion de l'utilisateur de l'API
       responses:
         '200':
           description: L'utilisateur est déconnecté avec succès
@@ -224,99 +254,233 @@ paths:
             type: integer
             format: int64
         - name: description
-          in: query
+          in: path
           description: Description de la photo
           required: false
           schema:
             type: string
-        - name: description
-          in: query
-          description: Description de la photo
-          required: false
-          schema:
-            type: string
-        - name: Date
-          in: query
+        - name: date
+          in: path
           description: Date mise en ligne de la photo
           required: false
           schema:
             type: string
-        - name: Location
-          in: query
+        - name: location
+          in: path
           description: Données géo de la photo
-          required: false
-          schema:
-            type: string
-        - name: url
-          in: query
-          description: Le lien de la photo
-          required: false
-          schema:
-            type: string
-        - name: Utilisateur
-          in: query
-          description: L'utilisateur qui a posté de la photo
           required: true
           schema:
             type: string
-        - name: Couleur
-          in: query
+        - name: url
+          in: path
+          description: Le lien de la photo
+          required: true
+          schema:
+            type: string
+        - name: user
+          in: path
+          description: Utilisateur existant qui a posté de la photo
+          required: true
+          schema:
+            type: string
+        - name: color
+          in: path
           description: Le thème couleur de la photo
           required: true
           schema:
             type: string
       requestBody:
         content:
-          application/octet-stream:
+          application/json:
             schema:
-              type: string
-              format: binary
+              type: object
+              properties:
+                photoId:
+                  type: string
+                  description: ID de la photo
+                  example: Bleu marine
+                description:
+                  type: string
+                  example: '#1F1F1F'
+                datePosted:
+                  type: date
+                  example: 07.11.2022
+                
       responses:
         '200':
           description: Photo ajoutée avec succès
+        '400':
+          description: ''
+        '404':
+          description: Page non trouvée
   
   /photos/{id}:
     get:
       tags:
         - photo
-      summary: Affiche la photo selectionnée
+      summary: Affiche la photo par son ID
       description: ''
+      parameters:
+        - name: photoId
+          in: path
+          description: ID de la photo sélectionnée
+          required: false
+          schema:
+            type: string
     put:
       tags:
         - photo
-      summary: Met à jour une photo existante
+      summary: Met à jour la photo par son ID
       description: ''
+      parameters:
+        - name: photoId
+          in: path
+          description: ID de la photo sélectionnée
+          required: false
+          schema:
+            type: string
     delete:
       tags:
         - photo
-      summary: Supprime la photo selectionnée
+      summary: Supprime la photo par son ID
       description: ''
+      parameters:
+        - name: photoId
+          in: path
+          description: ID de la photo sélectionnée
+          required: false
+          schema:
+            type: string
   /couleurs:
     get:
       tags:
         - couleur
-      summary: Affiche toutes les couleurs
+      summary: Retourne une liste des couleurs
       description: ''
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: Nom de la couleur
+                  example: Bleu marine
+                hex:
+                  type: string
+                  description: Code hexadécimal de la couleur
+                  example: '#1F1F1F'
+                datePosted:
+                  type: date
+                  description: Date à laquelle la couleur apparaît
+              examples:
+                name: Vert pomme
+                hex: '#222222'
+                datePosted: 07/09/2022
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: ''
+        '404':
+          description: Page non trouvée
     put:
       tags:
         - couleur
-      summary: Met à jour une couleur existante
+      summary: Met à jour les couleurs
       description: ''
   /couleurs/{id}:
     get:
       tags:
         - couleur
-      summary: Affiche la couleur selectionnée
+      summary: Affiche la couleur par son ID
       description: ''
+      parameters:
+        - name: photoId
+          in: path
+          description: ID de la couleur
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: Nom de la couleur
+                  example: Bleu marine
+                hex:
+                  type: string
+                  description: Code hexadécimal de la couleur
+                  example: '#1F1F1F'
+                datePosted:
+                  type: date
+                  description: 07/09/2022
     post:
       tags:
         - couleur
-      summary: Modifier la couleur selectionnée
+      summary: Modifier la couleur par son ID
       description: ''
+      parameters:
+        - name: couleurId
+          in: path
+          description: ID de la couleur
+          required: true
+          unique: true
+          schema:
+            type: string
+        - name: name
+          in: path
+          description: Nom de la couleur
+          required: true
+          unique: true
+          schema:
+            type: string
+        - name: hex
+          in: path
+          description: Code hexadécimal de la couleur
+          required: true
+          unique: true
+          schema:
+            type: string
+        - name: datePosted
+          in: path
+          description: Date à laquelle la couleur apparaît
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: Nom de la couleur
+                  example: Bleu marine
+                hex:
+                  type: string
+                  description: Code hexadécimal de la couleur
+                  example: '#1F1F1F'
+                datePosted:
+                  type: date
+                  description: Date à laquelle la couleur apparaît
+      responses:
+        '200':
+          description: Couleur ajoutée avec succès
+        '400':
+          description: ''
+        '404':
+          description: Page non trouvée
     delete:
       tags:
         - couleur
-      summary: Supprimer la couleur selectionnée
+      summary: Supprimer la couleur par son ID
       description: ''
     
     
