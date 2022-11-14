@@ -1,5 +1,5 @@
 import createDebugger from 'debug';
-import { WebSocketServer } from 'ws';
+import WebSocket, { WebSocketServer } from 'ws';
 
 const debug = createDebugger('express-api:messaging');
 
@@ -55,3 +55,22 @@ function onMessageReceived(ws, message) {
   debug(`Received WebSocket message: ${JSON.stringify(message)}`);
   // Do something with message...
 }
+
+
+/* Ce code est à mettre dans l'application mobile, du côté client */
+
+/*
+// Open a WebSocket connection to the server running on localhost port 3000.
+const ws = new WebSocket('ws://localhost:3000')
+
+// Wait for the connection to open.
+ws.addEventListener('open', function(event) {
+  // Send something to the server.
+  ws.send('Hello Server!');
+});
+
+// Listen for message from the server.
+ws.addEventListener('message', function(event) {
+  console.log('Message from server ', event.data);
+});
+*/

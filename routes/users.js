@@ -61,7 +61,7 @@ router.post('/', function (req, res, next) {
 });
 
 //Envoi de messages 
-router.post('/websocket', function(req, res, next) {
+router.post('/tempsreel', function(req, res, next) {
   // Do stuff...
   broadcastMessage({ hello: 'Mon premier test ws' });
   res.send("Received message")

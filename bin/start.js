@@ -3,7 +3,6 @@
 /**
  * Module dependencies.
  */
-
 import app from "../app.js";
 import createDebugger from "debug";
 import http from "http";
@@ -88,7 +87,5 @@ function onListening() {
 }
 
 
-
 // Create HTTP & WebSocket servers.
-
 createWebSocketServer(server);
