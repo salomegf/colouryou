@@ -6,6 +6,7 @@ import indexRouter from "./routes/index.js";
 import usersRouter from "./routes/users.js";
 import photosRouter from "./routes/photos.js";
 import couleursRouter from "./routes/couleurs.js";
+import authRouter from "./routes/auth.js";
 
 import fs from 'fs';
 import yaml from 'js-yaml';
@@ -28,6 +29,7 @@ app.use("/", indexRouter);
 app.use("/users", usersRouter);
 app.use("/photos", photosRouter);
 app.use("/couleurs", couleursRouter);
+app.use("/login", authRouter);
 
 // Parse the OpenAPI document.
 const openApiDocument = yaml.load(fs.readFileSync('./openapi.yaml'));
@@ -50,4 +52,4 @@ app.use(function (err, req, res, next) {
   res.send(err.message);
 });
 
-export default app;
+export default app;
