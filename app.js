@@ -31,6 +31,7 @@ app.use("/photos", photosRouter);
 app.use("/couleurs", couleursRouter);
 app.use("/login", authRouter);
 
+
 // Parse the OpenAPI document.
 const openApiDocument = yaml.load(fs.readFileSync('./openapi.yaml'));
 // Serve the Swagger UI documentation.
