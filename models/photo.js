@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
 
+
 const Schema = mongoose.Schema
 
 const photoSchema = new Schema({
@@ -35,10 +36,12 @@ const photoSchema = new Schema({
     coordinates: {
       type: [Number],
       required: true,
-      validate: {
+      validate: [
+        {
         validator: validateGeoJsonCoordinates,
-        message: '{VALUE} is not a valid longitude/latitude(/altitude) coordinates array'
+        message:  '{VALUE} n\'est pas une coordonnée de longitude/latitude(/altitude) valide'
       }
+    ]
     }
   }
 }, {

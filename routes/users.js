@@ -1,6 +1,8 @@
 import bcrypt from "bcrypt";
 import express from "express";
 import User from "../models/user.js";
+import { broadcastMessage } from "../ws.js";
+
 const router = express.Router();
 
 // ajouter authentification
@@ -55,6 +57,14 @@ router.post('/', function (req, res, next) {
       res.send(savedUser);
     });
   });
+});
+
+//Envoi de messages 
+router.post('/tempsreel', function(req, res, next) {
+  // Do stuff...
+  broadcastMessage({ hello: 'Mon premier test ws' });
+  res.send("Received message")
+
 });
 
 export default router;
