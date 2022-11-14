@@ -123,6 +123,4 @@ function transformJsonUser(doc, json, options) {
  return json;
 }
 
-
-
 export default mongoose.model('User', userSchema)

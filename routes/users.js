@@ -48,7 +48,6 @@ router.post('/', function (req, res, next) {
       return next(err);
     }
 
-
     const newUser = new User(req.body);
     newUser.password = hashedPassword;
     newUser.save(function (err, savedUser) {
