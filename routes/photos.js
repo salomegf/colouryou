@@ -1,6 +1,8 @@
 import express from "express";
 import Photo from "../models/photo.js";
 import mongoose from 'mongoose'
+import { broadcastMessage } from "../ws.js";
+
 const ObjectId = mongoose.Types.ObjectId;
 const router = express.Router();
 
@@ -51,6 +53,9 @@ router.post('/', function (req, res, next) {
       return next(err);
     }
     res.send(savedPhoto);
+    broadcastMessage({
+      event: "photoPosted"
+    });
   });
 });
 

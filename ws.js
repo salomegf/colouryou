@@ -20,6 +20,8 @@ export function createWebSocketServer(httpServer) {
     // Keep track of clients.
     clients.push(ws);
 
+    // TEST : ws.send('hello')
+
     // Listen for messages sent by clients.
     ws.on('message', (message) => {
       // Make sure the message is valid JSON.
@@ -47,8 +49,9 @@ export function broadcastMessage(message) {
   debug(
     `Broadcasting message to all connected clients: ${JSON.stringify(message)}`
   );
-  // You can easily iterate over the "clients" array to send a message to all
-  // connected clients.
+  for  (const client of clients){
+    client.send(JSON.stringify(message))
+  }
 }
 
 function onMessageReceived(ws, message) {

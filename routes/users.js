@@ -43,29 +43,26 @@ router.post('/', function (req, res, next) {
   const plainPassword = req.body.password;
   const costFactor = 10;
 
-  bcrypt.hash(plainPassword, costFactor, function(err, hashedPassword) {
+  bcrypt.hash(plainPassword, costFactor, function (err, hashedPassword) {
     if (err) {
       return next(err);
     }
 
 
-  const newUser = new User(req.body);
-  newUser.password = hashedPassword;
-  newUser.save(function (err, savedUser) {
-    if (err) {
-      return next(err);
-    }
-    res.send(savedUser);
+    const newUser = new User(req.body);
+    newUser.password = hashedPassword;
+    newUser.save(function (err, savedUser) {
+      if (err) {
+        return next(err);
+      }
+      res.send(savedUser);
+
+      broadcastMessage({
+        event: "userCreated",
+        username: savedUser.username
+      });
+    });
   });
-});
-});
-
-//Envoi de messages 
-router.post('/tempsreel', function(req, res, next) {
-  // Do stuff...
-  broadcastMessage({ hello: 'Mon premier test ws' });
-  res.send("Received message")
-
 });
 
 export default router;

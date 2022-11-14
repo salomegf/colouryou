@@ -87,5 +87,5 @@ function onListening() {
 }
 
 
-// Create HTTP & WebSocket servers.
+// Create WebSocket servers.
 createWebSocketServer(server);
