@@ -24,7 +24,7 @@ const userSchema = new Schema({
     type: String,
     required: true,
     minlength: [8, "Password is too short"]
-    
+
   },
   username: {
     type: String,
@@ -42,12 +42,12 @@ const userSchema = new Schema({
 userSchema.set("toJSON", {
   transform: transformJsonUser
 });
+
 function transformJsonUser(doc, json, options) {
- // Remove the hashed password from the generated JSON.
- delete json.password;
- return json;
+  // Remove the hashed password from the generated JSON.
+  delete json.password;
+  delete json.__v;
+  return json;
 }
-
-
 
 export default mongoose.model('User', userSchema)

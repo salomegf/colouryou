@@ -41,21 +41,20 @@ router.post('/', function (req, res, next) {
   const plainPassword = req.body.password;
   const costFactor = 10;
 
-  bcrypt.hash(plainPassword, costFactor, function(err, hashedPassword) {
+  bcrypt.hash(plainPassword, costFactor, function (err, hashedPassword) {
     if (err) {
       return next(err);
     }
 
-
-  const newUser = new User(req.body);
-  newUser.password = hashedPassword;
-  newUser.save(function (err, savedUser) {
-    if (err) {
-      return next(err);
-    }
-    res.send(savedUser);
+    const newUser = new User(req.body);
+    newUser.password = hashedPassword;
+    newUser.save(function (err, savedUser) {
+      if (err) {
+        return next(err);
+      }
+      res.send(savedUser);
+    });
   });
-});
 });
 
 export default router;
