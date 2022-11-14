@@ -1,20 +1,31 @@
 import mongoose from 'mongoose';
 
-const ObjectId = mongoose.Types.ObjectId;
 const Schema = mongoose.Schema
 
 const userSchema = new Schema({
   name: {
     type: String,
     required: true,
-    minlength: [3, "Name is too short"],
-    maxlength: 20
+    minlength: [3, "Le nom est trop court"],
+    maxlength: 20,
+    validate:[
+      {
+        validator: validateString,
+        message: 'Ce prénom {VALUE} contient des caractères spéciaux'
+      }
+    ]
   },
   surname: {
     type: String,
     required: true,
-    minlength: [2, "Surname is too short"],
-    maxlength: 20
+    minlength: [2, "Le nom de famille est trop court"],
+    maxlength: 20,
+    validate:[
+      {
+        validator: validateString,
+        message: 'Ce nom {VALUE} contient des caractères spéciaux'
+      }
+    ]
   },
   email: {
     type: String,
@@ -34,7 +45,7 @@ const userSchema = new Schema({
   password: {
     type: String,
     required: true,
-    minlength: [8, "Password is too short"]
+    minlength: [8, "Le mot de passe est trop court"]
 
   },
   username: {
@@ -84,6 +95,13 @@ function validateEmailUnique(value) {
 
 function validateEmailFormat(value) {
   const regex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+  return regex.test(value)
+
+
+}
+
+function validateString(value) {
+  const regex = /\b([A-ZÀ-ÿ][-a-z. ']+[ ]*)+/;
   return regex.test(value)
 
 
