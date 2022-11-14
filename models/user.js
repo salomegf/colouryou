@@ -6,7 +6,7 @@ const userSchema = new Schema({
   name: {
     type: String,
     required: true,
-    minlength: [3, "Name is too short"],
+    minlength: [3, "Le nom est trop court"],
     maxlength: 20,
     validate:[
       {
@@ -45,7 +45,7 @@ const userSchema = new Schema({
   password: {
     type: String,
     required: true,
-    minlength: [8, "Password is too short"]
+    minlength: [8, "Le mot de passe est trop court"]
 
   },
   username: {
