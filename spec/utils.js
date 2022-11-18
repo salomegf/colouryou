@@ -1,9 +1,11 @@
 import User from "../models/user.js"
+import Couleur from "../models/couleur.js"
 import jwt from "jsonwebtoken"
 
 export const cleanUpDatabase = async function () {
     await Promise.all([
-        User.deleteMany()
+        User.deleteMany(),
+        Couleur.deleteMany()
     ]);
 };
 

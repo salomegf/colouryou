@@ -67,4 +67,13 @@ function isLongitude(value) {
   return value >= -180 && value <= 180;
 }
 
+photoSchema.set("toJSON", {
+  transform: transformJsonUser
+});
+
+function transformJsonUser(doc, json, options) {
+  delete json.__v;
+  return json;
+}
+
 export default mongoose.model('Photo', photoSchema)

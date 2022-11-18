@@ -8,31 +8,26 @@ const userSchema = new Schema({
     required: true,
     minlength: [3, "Le nom est trop court"],
     maxlength: 20,
-    validate:[
-      {
-        validator: validateString,
-        message: 'Ce prénom {VALUE} contient des caractères spéciaux'
-      }
-    ]
+    validate: [{
+      validator: validateString,
+      message: 'Ce prénom {VALUE} contient des caractères spéciaux'
+    }]
   },
   surname: {
     type: String,
     required: true,
     minlength: [2, "Le nom de famille est trop court"],
     maxlength: 20,
-    validate:[
-      {
-        validator: validateString,
-        message: 'Ce nom {VALUE} contient des caractères spéciaux'
-      }
-    ]
+    validate: [{
+      validator: validateString,
+      message: 'Ce nom {VALUE} contient des caractères spéciaux'
+    }]
   },
   email: {
     type: String,
     required: true,
     unique: true,
-    validate: [
-      {
+    validate: [{
         validator: validateEmailUnique,
         message: 'Mail {VALUE} déjà existant'
 
@@ -40,7 +35,8 @@ const userSchema = new Schema({
       {
         validator: validateEmailFormat,
         message: 'Cet email {VALUE} contient des caractères spéciaux'
-      }]
+      }
+    ]
   },
   password: {
     type: String,
@@ -55,12 +51,10 @@ const userSchema = new Schema({
     validate:
       // Manually validate uniqueness to send a "pretty" validation error
       // rather than a MongoDB duplicate key error
-      [
-        {
-          validator: validateUsernameUnique,
-          message: 'Username {VALUE} déjà existant'
-        }
-      ]
+      [{
+        validator: validateUsernameUnique,
+        message: 'Username {VALUE} déjà existant'
+      }]
   },
   age: {
     type: Number,
@@ -90,37 +84,27 @@ function validateEmailUnique(value) {
     .then(existingEmail => {
       return !existingEmail || existingEmail._id.equals(this._id);
     })
-
 }
 
 function validateEmailFormat(value) {
   const regex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
   return regex.test(value)
-
-
 }
 
 function validateString(value) {
   const regex = /\b([A-ZÀ-ÿ][-a-z. ']+[ ]*)+/;
   return regex.test(value)
-
-
 }
-
-
-
 
 userSchema.set("toJSON", {
   transform: transformJsonUser
 });
 
-
-
 function transformJsonUser(doc, json, options) {
- // Remove the hashed password from the generated JSON.
- delete json.password;
- delete json.__v;
- return json;
+  // Remove the hashed password from the generated JSON.
+  delete json.password;
+  delete json.__v;
+  return json;
 }
 
 export default mongoose.model('User', userSchema)

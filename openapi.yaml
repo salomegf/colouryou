@@ -1,6 +1,6 @@
 openapi: "3.0.3"
 info:
-  title: couleurYou API
+  title: ColourYou API
   description: "L'API du moment"
   version: 2.0.0
 # servers:

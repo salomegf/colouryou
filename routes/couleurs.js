@@ -39,7 +39,8 @@ router.put("/:id", (req, res) => {
       console.log(err)
       res.sendStatus(400);
     } else {
-      res.sendStatus(200);
+      //res.sendStatus(200);
+      res.send(modifiedCouleur);
     }
   });
 });

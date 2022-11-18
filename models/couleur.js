@@ -6,13 +6,10 @@ const colorSchema = new Schema({
     type: String,
     required: true,
     unique: true,
-    validate: [
-      {
-        validator: validateCouleurUnique,
-        message: 'Cette couleur {VALUE} a déjà été enregistrée'
-
-      }
-    ]
+    validate: [{
+      validator: validateCouleurUnique,
+      message: 'Cette couleur {VALUE} a déjà été enregistrée'
+    }]
   },
 
   hex: {
@@ -21,8 +18,7 @@ const colorSchema = new Schema({
     unique: true,
     minlength: [6, "Le Code Hexadecimal est trop court"],
     maxlength: [6, "Le Code Hexadecimal est trop long"],
-    validate:[
-      {
+    validate: [{
         validator: validateStringInteger,
         message: 'Cette couleur {VALUE} contient des caractères non autorisés'
       },
@@ -48,7 +44,6 @@ function validateCouleurUnique(value) {
     .then(existingNameCouleur => {
       return !existingNameCouleur || existingNameCouleur._id.equals(this._id);
     })
-
 }
 
 function validateHexUnique(value) {
@@ -60,14 +55,20 @@ function validateHexUnique(value) {
     .then(existingHex => {
       return !existingHex || existingHex._id.equals(this._id);
     })
-
 }
 
 function validateStringInteger(value) {
   const regex = /([A-Z|0-9])/;
   return regex.test(value)
+}
 
+colorSchema.set("toJSON", {
+  transform: transformJsonUser
+});
 
+function transformJsonUser(doc, json, options) {
+  delete json.__v;
+  return json;
 }
 
 export default mongoose.model('Color', colorSchema)

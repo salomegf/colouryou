@@ -38,7 +38,6 @@ describe('GET /users', function () {
     let johnDoe;
     let janeDoe;
     beforeEach(async function () {
-        // Create 2 users before retrieving the list.
         [johnDoe, janeDoe] = await Promise.all([
             User.create({
                 name: 'John',
