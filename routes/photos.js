@@ -1,12 +1,8 @@
 import express from "express";
 import Photo from "../models/photo.js";
-<<<<<<< Updated upstream
 import mongoose from 'mongoose'
 import { broadcastMessage } from "../ws.js";
 
-=======
-import mongoose from "mongoose";
->>>>>>> Stashed changes
 const ObjectId = mongoose.Types.ObjectId;
 const router = express.Router();
 

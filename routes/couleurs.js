@@ -34,9 +34,9 @@ router.get("/", (req, res, next) => {
         page: page,
         pageSize: pageSize,
         total: total,
-      })
-    })
-  })
+      });
+    });
+  });
 });
 
 // affiche un utilisateur, selon son id
@@ -61,15 +61,6 @@ router.post("/", function (req, res, next) {
 // modifier une couleur
 router.put("/:id", (req, res) => {
   const modifiedCouleur = new Couleur(req.body);
-<<<<<<< Updated upstream
-  Couleur.findByIdAndUpdate(req.params.id, modifiedCouleur, function (err, couleur) {
-    if (err) {
-      console.log(err)
-      res.sendStatus(400);
-    } else {
-      //res.sendStatus(200);
-      res.send(modifiedCouleur);
-=======
   Couleur.findByIdAndUpdate(
     req.params.id,
     modifiedCouleur,
@@ -78,9 +69,9 @@ router.put("/:id", (req, res) => {
         console.log(err);
         res.sendStatus(400);
       } else {
-        res.sendStatus(200);
+        //res.sendStatus(200);
+        res.send(modifiedCouleur);
       }
->>>>>>> Stashed changes
     }
   );
 });

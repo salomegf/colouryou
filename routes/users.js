@@ -81,14 +81,11 @@ router.post("/", function (req, res, next) {
         return next(err);
       }
       res.send(savedUser);
-<<<<<<< Updated upstream
 
       broadcastMessage({
         event: "userCreated",
         username: savedUser.username
       });
-=======
->>>>>>> Stashed changes
     });
   });
 });
