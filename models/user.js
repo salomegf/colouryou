@@ -30,7 +30,6 @@ const userSchema = new Schema({
     validate: [{
         validator: validateEmailUnique,
         message: 'Mail {VALUE} déjà existant'
-
       },
       {
         validator: validateEmailFormat,
@@ -41,11 +40,7 @@ const userSchema = new Schema({
   password: {
     type: String,
     required: true,
-<<<<<<< Updated upstream
-    minlength: [8, "Le mot de passe est trop court"]
-=======
     minlength: [8, "Le mot de passe doit contenir au moins 8 caractères"]
->>>>>>> Stashed changes
 
   },
   username: {

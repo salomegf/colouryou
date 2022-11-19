@@ -1,10 +1,6 @@
 openapi: "3.0.3"
 info:
-<<<<<<< Updated upstream
   title: ColourYou API
-=======
-  title: ColorYou API
->>>>>>> Stashed changes
   description: "L'API du moment"
   version: 2.0.0
   servers:
