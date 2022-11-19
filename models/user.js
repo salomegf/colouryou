@@ -41,7 +41,11 @@ const userSchema = new Schema({
   password: {
     type: String,
     required: true,
+<<<<<<< Updated upstream
     minlength: [8, "Le mot de passe est trop court"]
+=======
+    minlength: [8, "Le mot de passe doit contenir au moins 8 caractères"]
+>>>>>>> Stashed changes
 
   },
   username: {
@@ -61,6 +65,10 @@ const userSchema = new Schema({
     // required: true,
     min: [13, "Tu dois avoir 13 ans au minimum"],
     max: 100
+  },
+  admin: {
+    type: Boolean,
+    default: false
   },
 });
 
