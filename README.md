@@ -8,7 +8,7 @@ Par Stefano Attanasio, Aline Chacón, Salomé Gfeller et Aleksandar Srbinovski.
 
 L'app permet de gérer des personnes, des images et des couleurs.
 
-Lisez la [documentation complète]([https://colouryou.onrender.com/api-docs/) pour plus de détails.
+Lisez la [documentation complète](https://colouryou.onrender.com/api-docs/) pour plus de détails.
 
 ### En ligne
 
