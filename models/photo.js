@@ -1,6 +1,5 @@
 import mongoose from 'mongoose';
 
-
 const Schema = mongoose.Schema
 
 const photoSchema = new Schema({
@@ -36,18 +35,15 @@ const photoSchema = new Schema({
     coordinates: {
       type: [Number],
       required: true,
-      validate: [
-        {
+      validate: [{
         validator: validateGeoJsonCoordinates,
-        message:  '{VALUE} n\'est pas une coordonnée de longitude/latitude(/altitude) valide'
-      }
-    ]
+        message: '{VALUE} n\'est pas une coordonnée de longitude/latitude(/altitude) valide'
+      }]
     }
   }
 }, {
   timestamps: true
 });
-
 
 // Create a geospatial index on the location property.
 photoSchema.index({

@@ -47,11 +47,10 @@ const userSchema = new Schema({
     type: String,
     required: true,
     unique: true,
-    validate:
-      [{
-        validator: validateUsernameUnique,
-        message: 'Username {VALUE} déjà existant'
-      }]
+    validate: [{
+      validator: validateUsernameUnique,
+      message: 'Username {VALUE} déjà existant'
+    }]
   },
   age: {
     type: Number,
@@ -61,7 +60,7 @@ const userSchema = new Schema({
   admin: {
     type: Boolean,
     default: false
-  },
+  }
 });
 
 function validateUsernameUnique(value) {

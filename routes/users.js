@@ -1,7 +1,10 @@
 import bcrypt from "bcrypt";
 import express from "express";
 import User from "../models/user.js";
-import { broadcastMessage } from "../ws.js";
+import {
+  broadcastMessage
+} from "../ws.js";
+import Photo from '../models/photo.js'
 
 const router = express.Router();
 
@@ -29,6 +32,42 @@ router.get("/", (req, res, next) => {
 
     query = query.skip((page - 1) * pageSize).limit(pageSize);
 
+    User.aggregate([{
+      $lookup: {
+        from: 'photos',
+        localField: '_id',
+        foreignField: 'user',
+        as: 'postedPhotos'
+      }
+    }, {
+      $unwind: '$postedPhotos'
+    }, {
+      $group: {
+        _id: '$_id',
+        name: {
+          $first: '$name'
+        },
+        surname: {
+          $first: '$surname'
+        },
+        email: {
+          $first: '$email'
+        },
+        username: {
+          $first: '$username'
+        },
+        age: {
+          $first: '$age'
+        },
+        admin: {
+          $first: '$admin'
+        },
+        postedPhotos: {
+          $sum: '$postedPhotos'
+        }
+      }
+    }]);
+
     // filtre par utilisateur
     if (req.query.username) {
       query = query.where("username").equals(req.query.username);
@@ -46,12 +85,27 @@ router.get("/", (req, res, next) => {
       if (err) {
         return next(err);
       }
-      res.send({
-        data: users,
-        page: page,
-        pageSize: pageSize,
-        total: total,
-      });
+      res.send(
+
+        /* users.map(user => {
+          // Transform the aggregated object into a Mongoose model.
+          const serialized = new User(user).toJSON();
+
+          // Add the aggregated property.
+          serialized.postedPhotos = user.postedPhotos;
+          console.log(serialized.postedPhotos);
+
+
+          return serialized;
+        }) */
+
+        {
+          data: users,
+          page: page,
+          pageSize: pageSize,
+          total: total,
+        }
+      );
     });
   });
 });
