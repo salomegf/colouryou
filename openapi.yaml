@@ -1,10 +1,6 @@
 openapi: "3.0.3"
 info:
-<<<<<<< Updated upstream
   title: ColourYou API
-=======
-  title: ColorYou API
->>>>>>> Stashed changes
   description: "L'API du moment"
   version: 2.0.0
   servers:
@@ -24,6 +20,25 @@ paths:
         - user
       summary: Retourne une liste d'utilisateurs
       description: Optional extended description in CommonMark or HTML
+      parameters:
+        - name: username
+          in: query
+          description: Le pseudo de l'utilisateur qui doit être retourné
+          required: true
+          schema:
+            type: string
+        - name: name
+          in: query
+          description: Le nom de l'utilisateur qui doit être retourné
+          required: true
+          schema:
+            type: string
+        - name: surname
+          in: query
+          description: Le prénom de l'utilisateur qui doit être retourné
+          required: true
+          schema:
+            type: string
       responses:
         '200':
           description: La liste des utilisateurs
@@ -39,40 +54,13 @@ paths:
         - user
       summary: Créer un utilisateur
       description: Insérer les champs nécessaires pour la création d'un utilisateur
-      parameters:
-        - name: name
-          in: path
-          required: true
-          description: Prénom de l'utilisateur
-        - name: surname
-          in: path
-          required: true
-          description: Nom de l'utilisateur
-        - name: email
-          in: path
-          required: true
-          description: Adresse mail de l'utilisateur
-        - name: password
-          in: path
-          required: true
-          description: Mot de passe
-        - name: username
-          in: path
-          required: true
-          description: Pseudo de l'utilisateur
-        - name: age
-          in: path
-          description: Age de l'utilisateur
       responses:
         '200':
-          description: Utilisateur crée
+          description: Utilisateur 
+        requestBody:  
           content:
             application/json:
               schema: 
-                # $ref: '#./models/user'
-                # type: array
-                # items: 
-                #   type: string
                 type: object
                 properties:
                   name:
@@ -99,6 +87,12 @@ paths:
                     type: number
                     description: L'âge de l'utilisateur
                     example: 24
+                required:
+                  - name
+                  - surname
+                  - email
+                  - password
+                  - username
         '400':
           description: Champs incorrect(s)
         '404':
@@ -110,8 +104,9 @@ paths:
       summary: Trouver les informations d'un utilisateur par son id
       parameters:
         - name: id
-          in: path
+          in: query
           description: L'identifiant unique de l'utilisateur
+          required: true
       requestBody:
         content:
           application/json:
@@ -132,7 +127,9 @@ paths:
                   example: Doe
       responses:
         '200':
-          description: Utilisateur crée            
+          description: Utilisateur crée
+        '405':
+          description: Méthode non autorisée      
   /users/login:
     get:
       tags: 
@@ -197,46 +194,27 @@ paths:
       description: ''
       operationId: uploadFile
       parameters:
-        - name: photoId
-          in: path
-          description: ID de la photo
+        - name: location
+          in: query
+          description: Les coordonnées géographiques de la photo 
           required: true
           schema:
-            type: integer
-            format: int64
-        - name: description
-          in: path
-          description: Description de la photo
-          required: false
+            type: string
+        - name: userId
+          in: query
+          description: L'identifiant de l'utilisateur qui a posté la photo
+          required: true
+          schema:
+            type: string
+        - name: couleurId
+          in: query
+          description: L'identifiant de la couleur en lien avec la photo
+          required: true
           schema:
             type: string
         - name: date
-          in: path
-          description: Date mise en ligne de la photo
-          required: false
-          schema:
-            type: string
-        - name: location
-          in: path
-          description: Données géo de la photo
-          required: true
-          schema:
-            type: string
-        - name: url
-          in: path
-          description: Le lien de la photo
-          required: true
-          schema:
-            type: string
-        - name: user
-          in: path
-          description: Utilisateur existant qui a posté de la photo
-          required: true
-          schema:
-            type: string
-        - name: color
-          in: path
-          description: Le thème couleur de la photo
+          in: query
+          description: La date de la photo
           required: true
           schema:
             type: string
@@ -298,6 +276,7 @@ paths:
               properties:
                 photoId:
                   type: string
+                  format: binary
                   description: ID de la photo
                   example: 63721b553ede76ff89a1fgtz
     put:
@@ -340,6 +319,22 @@ paths:
         - couleur
       summary: Retourne une liste des couleurs
       description: ''
+      parameters:
+        - name: name
+          in: query
+          description: Le nom de la couleur
+          schema:
+            type: string
+        - name: hex
+          in: query
+          description: Le code hexadécimal de la couleur
+          schema:
+            type: string
+        - name: datePosted
+          in: query
+          description: La date de la couleur
+          schema:
+            type: string
       requestBody:
         content:
           application/json:
@@ -368,6 +363,8 @@ paths:
           description: ''
         '404':
           description: Page non trouvée
+        '405':
+          description: Méthode non autorisée
     put:
       tags:
         - couleur
@@ -380,8 +377,8 @@ paths:
       summary: Affiche la couleur par son ID
       description: ''
       parameters:
-        - name: photoId
-          in: path
+        - name: couleurId
+          in: query
           description: ID de la couleur
           required: true
           schema:

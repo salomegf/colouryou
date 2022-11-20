@@ -41,11 +41,7 @@ const userSchema = new Schema({
   password: {
     type: String,
     required: true,
-<<<<<<< Updated upstream
-    minlength: [8, "Le mot de passe est trop court"]
-=======
     minlength: [8, "Le mot de passe doit contenir au moins 8 caractères"]
->>>>>>> Stashed changes
 
   },
   username: {
@@ -53,8 +49,6 @@ const userSchema = new Schema({
     required: true,
     unique: true,
     validate:
-      // Manually validate uniqueness to send a "pretty" validation error
-      // rather than a MongoDB duplicate key error
       [{
         validator: validateUsernameUnique,
         message: 'Username {VALUE} déjà existant'
@@ -62,7 +56,6 @@ const userSchema = new Schema({
   },
   age: {
     type: Number,
-    // required: true,
     min: [13, "Tu dois avoir 13 ans au minimum"],
     max: 100
   },
