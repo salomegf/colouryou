@@ -1,5 +1,7 @@
 import express from "express";
 import Couleur from "../models/couleur.js";
+import { broadcastMessage } from "../ws.js";
+
 const router = express.Router();
 
 // affiche toutes les couleurs
@@ -55,6 +57,11 @@ router.post("/", function (req, res, next) {
       return next(err);
     }
     res.send(savedCouleur);
+
+    broadcastMessage({
+      event: "colorAdded",
+      colors: savedCouleur.name
+    });
   });
 });
 
