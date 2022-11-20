@@ -30,7 +30,6 @@ const userSchema = new Schema({
     validate: [{
         validator: validateEmailUnique,
         message: 'Mail {VALUE} déjà existant'
-
       },
       {
         validator: validateEmailFormat,
