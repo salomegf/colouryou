@@ -30,6 +30,11 @@ npm start
 
 L'app va essayer de se connecter à la base de donnée MongoDB `mongodb://127.0.0.1/coloryou` si aucune variable d'environnement `$DATABASE_URL` n'est définie.
 
+## WebSocket 
+Deux types de messages vont être envoyés en temps réel.
+1. Lorsqu'un nouvel utilisateur est créé. Un message sera envoyé avec le terme "userCreated" et le username du nouvel utilisateur.
+2. Lorsqu'une couleur est ajoutée, un message sera envoyé avec le terme "colorAdded" et le nom de celle-ci.
+
 ## Tests automatisés
 
 La suite de tests peut être lancée avec `npm test`.
