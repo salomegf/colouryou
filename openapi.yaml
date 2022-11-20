@@ -8,11 +8,11 @@ info:
     description: Lien de l'API en ligne
 tags:
   - name: user
-    description: Everything about the users
+    description: Toutes les opérations liées aux utilisateurs
   - name: photo
-    description: Access to the photos
+    description: Toutes les opérations liées aux photos
   - name: couleur
-    description: See the couleurs
+    description: Toutes les opérations liées aux couleurs
 paths:
   /users:
     get:
@@ -39,64 +39,126 @@ paths:
           required: true
           schema:
             type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+            properties:
+              name:
+                type: string
+              surname:
+                type: string  
+              email:
+                type: string
+              password:
+                type: string
+              username:
+                type: string
+              age:
+                type: integer
+              admin:
+                type: boolean
+            examples:
+              user:
+                value:
+                  name: "John"
+                  surname: "Doe"
+                  email: "john.doe@hotmail.com"
+                  password: "jonh1234"
+                  username: "johndoe" 
+                  age: 25
+                  admin: false
+              user2:
+                value:
+                  name: "Jane"
+                  surname: "Doe"
+                  email: "jane.doee@gmail.com"
+                  password: "jane12333"
+                  username: "janedoe" 
+                  age: 28
+                  admin: true          
       responses:
         '200':
           description: La liste des utilisateurs
           content:
             application/json:
               schema:
-              #  $ref: '#/components/models/user'
-                type: array
-                items: 
-                  type: string
+                type: object
+                properties:
+                  users:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        name:
+                          type: string
+                        surname:
+                          type: string  
+                        email:
+                          type: string
+                        password:
+                          type: string
+                        username:
+                          type: string
+                        age:
+                          type: integer
+                        admin:
+                          type: boolean
+        '400':
+          description: Erreur de requête
+        '404':
+          description: Utilisateur non trouvé
     post:
       tags: 
         - user
       summary: Créer un utilisateur
       description: Insérer les champs nécessaires pour la création d'un utilisateur
+      requestBody:  
+        content:
+          application/json:
+            schema: 
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: Prénom de l'utilisateur
+                  example: John
+                surname:
+                  type: string
+                  description: Nom de l'utilisateur
+                  example: Doe
+                email:
+                  type: string
+                  description: Mail de l'utilisateur
+                  example: johndoe@hotmail.com
+                password:
+                  type: string
+                  description: Mot de passe de l'utilisateur
+                  example: test1234
+                username:
+                  type: string
+                  description: Pseudo de l'utilisateur
+                  example: john.doe
+                age:
+                  type: number
+                  description: L'âge de l'utilisateur
+                  example: 24
+              required:
+                - name
+                - surname
+                - email
+                - password
+                - username
       responses:
         '200':
-          description: Utilisateur 
-        requestBody:  
-          content:
-            application/json:
-              schema: 
-                type: object
-                properties:
-                  name:
-                    type: string
-                    description: Prénom de l'utilisateur
-                    example: John
-                  surname:
-                    type: string
-                    description: Nom de l'utilisateur
-                    example: Doe
-                  email:
-                    type: string
-                    description: Mail de l'utilisateur
-                    example: johndoe@hotmail.com
-                  password:
-                    type: string
-                    description: Mot de passe de l'utilisateur
-                    example: test1234
-                  username:
-                    type: string
-                    description: Pseudo de l'utilisateur
-                    example: john.doe
-                  age:
-                    type: number
-                    description: L'âge de l'utilisateur
-                    example: 24
-                required:
-                  - name
-                  - surname
-                  - email
-                  - password
-                  - username
+          description: Utilisateur créé
         '400':
           description: Champs incorrect(s)
         '404':
           description: 'Page non trouvée'
+        '500':
+          description: 'Erreur serveur'
   /users/{id}:
     get:
       tags: 
@@ -104,7 +166,7 @@ paths:
       summary: Trouver les informations d'un utilisateur par son id
       parameters:
         - name: id
-          in: query
+          in: path
           description: L'identifiant unique de l'utilisateur
           required: true
       requestBody:
@@ -125,9 +187,60 @@ paths:
                   type: string
                   description: Nom de l'utilisateur
                   example: Doe
+                email:
+                  type: string
+                  description: Mail de l'utilisateur
+                  example: john.doe@hotmail.com
+                password:
+                  type: string
+                  description: Mot de passe de l'utilisateur
+                  example: test1234
+                username:
+                  type: string
+                  description: Pseudo de l'utilisateur
+                  example: john.doe
+                age:
+                  type: number
+                  description: L'âge de l'utilisateur
+                  example: 24
+                admin:
+                  type: boolean
+                  description: Si l'utilisateur est admin ou non
+                  example: false
       responses:
         '200':
           description: Utilisateur crée
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  _id: 
+                    type: string
+                    example: "636cb9790788f89587f12895"
+                  name:
+                    type: string
+                    example: John
+                  surname:
+                    type: string
+                    example: Doe
+                  email:
+                    type: string
+                    example: john.doe@hotmail.com
+                  password:
+                    type: string
+                    example: test1234
+                  username:
+                    type: string
+                    example: john.doe
+                  age:
+                    type: number
+                    example: 24
+                  admin:
+                    type: boolean
+                    example: false
+        '400':
+          description: Champs incorrect(s)
         '405':
           description: Méthode non autorisée      
   /users/login:
@@ -187,17 +300,13 @@ paths:
         - photo
       summary: Retourne une liste des photos
       description: ''
-    post:
-      tags:
-        - photo
-      summary: Ajouter une photo
-      description: ''
-      operationId: uploadFile
       parameters:
         - name: location
           in: query
           description: Les coordonnées géographiques de la photo 
-          required: true
+          required: 
+          - type
+          - coordinates
           schema:
             type: string
         - name: userId
@@ -246,12 +355,89 @@ paths:
                 color: 
                   type: string
                   example: Bleu marine
-                
+      responses:
+        '200':
+          description: Liste des photos
+          content : 
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    photoId:
+                      type: string
+                      description: ID de la photo
+                      example: 63721b553ede76ff89a1fgtz
+                    description:
+                      type: string
+                      example: '#1F1F1F'
+                    datePosted:
+                      type: date
+                      example: 07.11.2022
+                    location:
+                      type: string
+                      example: Yverdon-les-Bains
+                    url:
+                      type: string
+                      example: https://colouryou.onrender.com/photos/63721b553ede76ff89a1fgtz
+                    user:
+                      type: string
+                      example: Par john.doe
+                    color: 
+                      type: string
+                      example: Bleu marine
+        '404':
+          description: Page non trouvée
+        '405':
+          description: Méthode non autorisée
+    post:
+      tags:
+        - photo
+      summary: Ajouter une photo
+      description: ''
+      operationId: uploadFile
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                photoId:
+                  type: string
+                  description: ID de la photo
+                  example: 63721b553ede76ff89a1fgtz
+                description:
+                  type: string
+                  example: '#1F1F1F'
+                datePosted:
+                  type: date
+                  example: 07.11.2022
+                location:
+                  type: string
+                  example: Yverdon-les-Bains
+                url:
+                  type: string
+                  example: https://colouryou.onrender.com/photos/63721b553ede76ff89a1fgtz
+                user:
+                  type: string
+                  example: Par john.doe
+                color: 
+                  type: string
+                  example: Bleu marine
+              required:
+                  - description
+                  - datePosted
+                  - location
+                  - url
+                  - user
+                  - color
       responses:
         '200':
           description: Photo ajoutée avec succès
+          content: {}
         '400':
-          description: ''
+          description: Champs incorrect(s)
         '404':
           description: Page non trouvée
   
@@ -265,7 +451,7 @@ paths:
         - name: photoId
           in: path
           description: ID de la photo sélectionnée
-          required: false
+          required: required
           schema:
             type: string
       requestBody:
@@ -277,8 +463,54 @@ paths:
                 photoId:
                   type: string
                   format: binary
-                  description: ID de la photo
-                  example: 63721b553ede76ff89a1fgtz
+                  example: 63721b553ede76ff89a1fgtz4
+                datePosted:
+                  type: date
+                  example: 07.11.2022
+                location:
+                  type: string
+                  example: Yverdon-les-Bains
+                url:
+                  type: string
+                  example: https://colouryou.onrender.com/photos/63721b553ede76ff89a1fgtz
+                user:
+                  type: string
+                  example: Par john.doe
+                color: 
+                  type: string
+                  example: Bleu marine
+        responses:
+          '200':
+            description: ''
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    photoId:
+                      type: string
+                      description: ID de la photo
+                      example: 63721b553ede76ff89a1fgtz
+                    description:
+                      type: string
+                      example: '#1F1F1F'
+                    datePosted:
+                      type: date
+                      example: 07.11.2022
+                    location:
+                      type: string
+                      example: Yverdon-les-Bains
+                    url:
+                      type: string
+                      example: https://colouryou.onrender.com/photos/63721b553ede76ff89a1fgtz
+                    user:
+                      type: string
+                      example: Par john.doe
+                    color: 
+                      type: string
+                      example: Bleu marine
+          '404':
+            description: Page non trouvée
     put:
       tags:
         - photo
@@ -288,7 +520,7 @@ paths:
         - name: photoId
           in: path
           description: ID de la photo sélectionnée
-          required: false
+          required: true
           schema:
             type: string
       requestBody:
@@ -299,8 +531,52 @@ paths:
               properties:
                 photoId:
                   type: string
-                  description: ID de la photo
-                  example: 63721b553ede76ff89a1fgtz
+                  example: 637gdfgdf89a1fgtz
+                datePosted:
+                  type: date
+                  example: 11.11.2022
+                location:
+                  type: string
+                  example: Yverdon-les-Bains
+                url:
+                  type: string
+                  example: https://colouryou.onrender.com/photos/63721b553ede76ff89a1fgtz
+                user:
+                  type: string
+                  example: Par jane.doe
+                color: 
+                  type: string
+                  example: Vert pomme
+      responses:
+        '200':
+          description: Photo mise à jour avec succès
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  photoId:
+                    type: string
+                    example: 637gdfgdf89a1fgtz
+                  datePosted:
+                    type: date
+                    example: 11.11.2022
+                  location:
+                    type: string
+                    example: Yverdon-les-Bains
+                  url:
+                    type: string
+                    example: https://colouryou.onrender.com/photos/63721b553ede76ff89a1fgtz
+                  user:
+                    type: string
+                    example: Par jane.doe
+                  color: 
+                    type: string
+                    example: Vert kaki
+        '400':
+          description: Champs incorrect(s)
+        '404':
+          description: Page non trouvée            
     delete:
       tags:
         - photo
@@ -313,6 +589,12 @@ paths:
           required: false
           schema:
             type: string
+      responses:
+        '200':
+          description: Photo supprimée avec succès
+          content: {}
+        '404':
+          description: Page non trouvée
   /couleurs:
     get:
       tags:
@@ -341,6 +623,44 @@ paths:
             schema:
               type: object
               properties:
+              name:
+                type: string
+              hex:
+                type: string  
+              datePosted:
+                type: string
+            examples:
+              couleur1:
+                value:
+                  name: Bleu marine
+                  hex: '#1F1F1F'
+                  datePosted: 07.11.2022
+              couleur2:
+                value:
+                  name: Vert kaki
+                  hex: '#2AA1F'
+                  datePosted: 11.11.2022
+      responses:
+        '200':
+          description: Liste des couleurs
+          content : {}
+        '400':
+          description: Champs incorrect(s)
+        '404':
+          description: Page non trouvée
+        '405':
+          description: Méthode non autorisée
+    post:
+      tags:
+        - couleur
+      summary: Créer une couleur
+      description: Il n'y a que l'administrateur qui peut créer une couleur
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
                 name:
                   type: string
                   description: Nom de la couleur
@@ -351,25 +671,84 @@ paths:
                   example: '#1F1F1F'
                 datePosted:
                   type: date
-                  description: 14.11.2022
-              examples:
-                name: Vert pomme
-                hex: '#222222'
-                datePosted: 14.12.2022
+                  example: 07/09/2022
       responses:
         '200':
-          description: OK
+          description: Couleur ajoutée avec succès
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  name:
+                    type: string
+                    description: Nom de la couleur
+                    example: Bleu marine
+                  hex:
+                    type: string
+                    description: Code hexadécimal de la couleur
+                    example: '#1F1F1F'
+                  datePosted:
+                    type: date
+                    example: 07/09/2022
         '400':
           description: ''
         '404':
           description: Page non trouvée
-        '405':
-          description: Méthode non autorisée
     put:
       tags:
         - couleur
       summary: Met à jour les couleurs
       description: ''
+      parameters:
+        - name: couleurId
+          in: path
+          description: ID de la couleur sélectionnée
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                couleurId:
+                  type: string
+                  example: 637gdfgdf89a1fgtz
+                name: 
+                  type: string
+                  example: Vert kaki
+                hex:
+                  type: string
+                  example: '#2AA1F'
+                datePosted:
+                  type: date
+                  example: 11.11.2022
+      responses:
+        '200':
+          description: Couleur mise à jour avec succès
+          content: 
+            application/json:
+              schema:
+                type: object
+                properties:
+                  couleurId:
+                    type: string
+                    example: 637gdfgdf89aaatz
+                  name: 
+                    type: string
+                    example: Vert pome
+                  hex:
+                    type: string
+                    example: '#3AA1F'
+                  datePosted:
+                    type: date
+                    example: 11.11.2022
+        '400':
+          description: Champs incorrect(s)
+        '404':
+          description: Page non trouvée        
   /couleurs/{id}:
     get:
       tags:
@@ -378,7 +757,7 @@ paths:
       description: ''
       parameters:
         - name: couleurId
-          in: query
+          in: path
           description: ID de la couleur
           required: true
           schema:
@@ -400,61 +779,26 @@ paths:
                 datePosted:
                   type: date
                   description: 07/09/2022
-    post:
-      tags:
-        - couleur
-      summary: Modifier la couleur par son ID
-      description: ''
-      parameters:
-        - name: couleurId
-          in: path
-          description: ID de la couleur
-          required: true
-          unique: true
-          schema:
-            type: string
-        - name: name
-          in: path
-          description: Nom de la couleur
-          required: true
-          unique: true
-          schema:
-            type: string
-        - name: hex
-          in: path
-          description: Code hexadécimal de la couleur
-          required: true
-          unique: true
-          schema:
-            type: string
-        - name: datePosted
-          in: path
-          description: Date à laquelle la couleur apparaît
-          required: true
-          schema:
-            type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                name:
-                  type: string
-                  description: Nom de la couleur
-                  example: Bleu marine
-                hex:
-                  type: string
-                  description: Code hexadécimal de la couleur
-                  example: '#1F1F1F'
-                datePosted:
-                  type: date
-                  description: Date à laquelle la couleur apparaît
       responses:
         '200':
-          description: Couleur ajoutée avec succès
-        '400':
-          description: ''
+          description: Couleur affichée avec succès
+          content: 
+            application/json:
+              schema:
+                type: object
+                properties:
+                  couleurId:
+                    type: string
+                    example: 637gdfgdf89aaatz
+                  name: 
+                    type: string
+                    example: Vert pome
+                  hex:
+                    type: string
+                    example: '#3AA1F'
+                  datePosted:
+                    type: date
+                    example: 11.11.2022
         '404':
           description: Page non trouvée
     delete:
@@ -462,6 +806,16 @@ paths:
         - couleur
       summary: Supprimer la couleur par son ID
       description: ''
-    
-    
-    
+      parameters:
+        - name: couleurId
+          in: path
+          description: ID de la couleur sélectionnée
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Couleur supprimée avec succès
+          content: {}
+        '404':
+          description: Page non trouvée
